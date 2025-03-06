@@ -25,9 +25,9 @@ cd go-btc-multisig-cli
 go build
 ```
 
-### Usage
+### Configuration
 
-### Configure RPC Connection
+#### RPC Connection
 
 Set up your Bitcoin node RPC connection for gas price estimation:
 
@@ -38,48 +38,79 @@ go-btc-multisig-cli config set rpc_username your_username
 go-btc-multisig-cli config set rpc_password your_password
 ```
 
-### Storage Options
+#### Cloud Storage Credentials
+
+For security reasons, cloud storage credentials are read from environment variables:
+
+**Google Drive:**
+```bash
+export GOOGLE_OAUTH_CLIENT_ID="your_client_id"
+export GOOGLE_OAUTH_CLIENT_SECRET="your_client_secret"
+```
+
+**Dropbox:**
+```bash
+export DROPBOX_APP_KEY="your_app_key"
+export DROPBOX_APP_SECRET="your_app_secret"
+```
+
+**OneDrive:**
+```bash
+export ONEDRIVE_CLIENT_ID="your_client_id"
+export ONEDRIVE_CLIENT_SECRET="your_client_secret"
+```
+
+You can obtain these credentials by creating applications in the respective developer portals:
+- Google Drive: [Google Cloud Console](https://console.cloud.google.com/)
+- Dropbox: [Dropbox Developer Console](https://www.dropbox.com/developers)
+- OneDrive: [Microsoft Azure Portal](https://portal.azure.com/)
+
+### Usage
+
+#### Storage Options
 
 The tool supports multiple storage methods:
 
 - `fs:` - Local filesystem
-- `googledrive:`
+- `googledrive:` - Google Drive
+- `dropbox:` - Dropbox
+- `onedrive:` - OneDrive
 
-### Generate a wallet and save to local file
+#### Generate a wallet and save to local file
 ```bash
 go-btc-multisig-cli generateWallet --out fs:/path/to/wallet.json
 ```
 
-# Generate a testnet wallet and show mnemonic
+#### Generate a testnet wallet and show mnemonic
 ```bash
 go-btc-multisig-cli generateWallet --testnet --show
 ```
 
-# Save to cloud storage
+#### Save to cloud storage
 ```bash
 go-btc-multisig-cli generateWallet --out googledrive:/backups/wallet.json
 go-btc-multisig-cli generateWallet --out dropbox:/backups/wallet.json
 go-btc-multisig-cli generateWallet --out onedrive:/backups/wallet.json
 ```
 
-# From local file
+#### Get public key from local file
 ```bash
 go-btc-multisig-cli getPublicKey --input fs:/path/to/wallet.json
 ```
 
-# From cloud storage
+#### Get public key from cloud storage
 ```bash
 go-btc-multisig-cli getPublicKey --input googledrive:/backups/wallet.json
 go-btc-multisig-cli getPublicKey --input dropbox:/backups/wallet.json
 go-btc-multisig-cli getPublicKey --input onedrive:/backups/wallet.json
 ```
 
-# For testnet
+#### Get public key for testnet
 ```bash
-    go-btc-multisig-cli getPublicKey --input fs:/path/to/wallet.json --testnet
+go-btc-multisig-cli getPublicKey --input fs:/path/to/wallet.json --testnet
 ```
 
-# Create a 2-of-3 P2SH multisig wallet
+#### Create a 2-of-3 P2SH multisig wallet
 ```bash
 go-btc-multisig-cli generateMulti --type p2sh --m 2 --n 3 \
   --publicKeys 02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc,\
@@ -88,7 +119,7 @@ go-btc-multisig-cli generateMulti --type p2sh --m 2 --n 3 \
   --out fs:/path/to/multisig.json
 ```
 
-# Create a P2WSH (native SegWit) multisig wallet
+#### Create a P2WSH (native SegWit) multisig wallet
 ```bash
 go-btc-multisig-cli generateMulti --type p2wsh --m 2 --n 3 \
   --publicKeys 02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc,\
@@ -97,7 +128,7 @@ go-btc-multisig-cli generateMulti --type p2wsh --m 2 --n 3 \
   --testnet
 ```
 
-# Create a P2SH-P2WSH (nested SegWit) multisig wallet
+#### Create a P2SH-P2WSH (nested SegWit) multisig wallet
 ```bash
 go-btc-multisig-cli generateMulti --type p2sh-p2wsh --m 2 --n 3 \
   --publicKeys 02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc,\
@@ -105,7 +136,19 @@ go-btc-multisig-cli generateMulti --type p2sh-p2wsh --m 2 --n 3 \
 02e7c6b176786f58754b1cc703d78f55107c9b5239befc06a6c7950bc5a61272fd
 ```
 
-# Check current gas price
+#### Check current gas price
 ```bash
 go-btc-multisig-cli getGasPrice
 ```
+
+### Security Features
+
+- Strong password requirements (minimum 10 characters, uppercase, lowercase, numbers, special characters)
+- AES-256-GCM encryption with Argon2id key derivation
+- BIP67 deterministic public key sorting for multisig addresses
+- Support for various address types with different security properties
+- Environment variable-based configuration for sensitive credentials
+
+### License
+
+[MIT License](LICENSE)
