@@ -3,6 +3,10 @@
 
 **notice**: This tool is still under development and not all features are available.   
 
+**TODO**:
+- [ ] Add transaction signing and broadcasting
+- [ ] Add more documentation
+
 ### Features
 - Generate single-signature wallets with various address types (P2PKH, P2WPKH, P2SH, P2WSH, P2TR)
 - Create multisig wallets (P2SH, P2WSH, P2SH-P2WSH)
